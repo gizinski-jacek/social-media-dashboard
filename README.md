@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+# ! PROJECT ON HOLD !
+
+This project is on hold until I manage to fix issues with getting social media accounts API access
+
 ## Getting Started
 
 First, run the development server:
