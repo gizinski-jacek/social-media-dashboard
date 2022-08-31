@@ -6,10 +6,10 @@ import { passport } from '../../../../lib/middleware/passport';
 const handler = nc<NextApiRequest, NextApiResponse>({
 	onError: (err, req, res, next) => {
 		console.error(err.stack);
-		res.status(500).end('Something broke!');
+		return res.status(500).end('Something broke!');
 	},
 	onNoMatch: (req, res) => {
-		res.status(404).end('Page not found');
+		return res.status(404).end('Page not found');
 	},
 }).get(async (req, res, next) => {
 	const { provider } = req.query as { provider: string };
