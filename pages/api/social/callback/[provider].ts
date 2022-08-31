@@ -32,14 +32,14 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 				// Move most of this logic to passport strategy?
 				const token = await getToken({ req });
 				if (!token || !user) {
-					res.status(404).end('Error authenticating');
+					return res.status(404).end('Error authenticating');
 				}
 				await connectMongo();
 				const dbUser: MongoUserModel = await User.findById(token.user._id)
 					.select('+socials')
 					.exec();
 				if (!dbUser) {
-					res.status(404).end('User not found');
+					return res.status(404).end('User not found');
 				}
 				const newSocial: SocialMediaData = {
 					id: user.profile.id,
@@ -81,7 +81,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 				}
 			} catch (error) {
 				console.log(error);
-				res.status(404).end('Error authenticating');
+				return res.status(404).end('Error authenticating');
 			}
 		}
 	)(req, res, next);
