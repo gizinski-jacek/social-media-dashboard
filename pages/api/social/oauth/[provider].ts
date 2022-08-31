@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
-import { passport } from '../../../../lib/middleware/passport';
+import { passport } from '../../../../lib/passport/passport';
 
 const handler = nc<NextApiRequest, NextApiResponse>({
 	onError: (err, req, res, next) => {

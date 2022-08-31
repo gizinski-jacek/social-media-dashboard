@@ -2,8 +2,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getToken } from 'next-auth/jwt';
 import nc from 'next-connect';
-// import passport from 'passport';
-import { passport } from '../../../../lib/middleware/passport';
+import { passport } from '../../../../lib/passport/passport';
 import connectMongo from '../../../../lib/mongoose';
 import { MongoUserModel, SocialMediaData } from '../../../../types/myTypes';
 import User from '../../../../models/user';
