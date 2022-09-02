@@ -23,14 +23,13 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 	passport.authenticate(
 		provider,
 		{ session: false },
-		async (error, user, msg) => {
+		async (error, payload, msg) => {
 			if (error) {
 				return next(error);
 			}
 			try {
-				// Move most of this logic to passport strategy?
 				const token = await getToken({ req });
-				if (!token || !user) {
+				if (!token || !payload) {
 					return res.status(404).end('Error authenticating');
 				}
 				await connectMongo();
@@ -40,25 +39,15 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 				if (!dbUser) {
 					return res.status(404).end('User not found');
 				}
-				const newSocial: SocialMediaData = {
-					id: user.profile.id,
-					provider: user.profile.provider,
-					username: user.profile.displayName,
-					picture: user.profile.photos[0].value,
-					access_token: user.accessToken,
-				};
-				if (user.refreshToken) {
-					newSocial.refresh_token = user.refreshToken;
-				}
 				const socialExists = (dbUser.socials as SocialMediaData[]).find(
 					(s) => s.provider === provider
 				);
 				if (socialExists) {
 					const updatedUser = await User.findByIdAndUpdate(
 						dbUser._id,
-						{ $set: { 'socials.$[el]': newSocial } },
+						{ $set: { 'socials.$[el]': payload } },
 						{
-							arrayFilters: [{ 'el.host': provider }],
+							arrayFilters: [{ 'el.provider': provider }],
 							timestamps: true,
 							new: true,
 						}
@@ -70,7 +59,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 				} else {
 					const updatedUser = await User.findByIdAndUpdate(
 						dbUser._id,
-						{ $addToSet: { socials: newSocial } },
+						{ $addToSet: { socials: payload } },
 						{ upsert: true, timestamps: true, new: true }
 					).exec();
 					if (!updatedUser) {
