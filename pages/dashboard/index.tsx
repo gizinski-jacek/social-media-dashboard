@@ -30,7 +30,6 @@ const Dashboard = ({ data }: Props) => {
 
 	const handleSocialChange = useCallback(
 		(value: string | null) => {
-			console.log(123);
 			updateSocial(value);
 		},
 		[updateSocial]
@@ -59,7 +58,14 @@ const Dashboard = ({ data }: Props) => {
 		>
 			{social ? (
 				socialsAccess.find((s) => s.provider === social) ? (
-					<Box sx={{ width: '100%', height: '100%', overflow: 'auto' }}>
+					<Box
+						sx={{
+							width: '100%',
+							height: '100%',
+							overflow: 'auto',
+							display: 'flex',
+						}}
+					>
 						<SocialComponent />
 					</Box>
 				) : (
@@ -67,7 +73,7 @@ const Dashboard = ({ data }: Props) => {
 						component='a'
 						type='button'
 						variant='contained'
-						href={`/api/social/oauth/${social}`}
+						href={`/api/social-oauth/${social}`}
 					>
 						Sign in with {social}
 					</Button>
