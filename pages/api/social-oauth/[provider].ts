@@ -1,7 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
-import { passport } from '../../../../lib/passport/passport';
+import { passport } from '../../../lib/passport/passport';
+
+const scopes = {
+	facebook: [], // Leave empty, use profileFields in strategy instead
+	twitter: ['users.read ', 'tweet.read ', 'offline.access'],
+	instagram: ['user_profile', 'user_media'],
+};
 
 const handler = nc<NextApiRequest, NextApiResponse>({
 	onError: (err, req, res, next) => {
@@ -16,7 +22,11 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 	if (!provider) {
 		return res.status(404).end('Provider not supported');
 	}
-	passport.authenticate(provider, { session: false })(req, res, next);
+	passport.authenticate(provider, { session: false, scope: scopes[provider] })(
+		req,
+		res,
+		next
+	);
 });
 
 export default handler;
