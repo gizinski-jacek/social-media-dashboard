@@ -1,10 +1,9 @@
 import { getSession, GetSessionParams, SessionProvider } from 'next-auth/react';
 import { Session } from 'next-auth';
 import Head from 'next/head';
-import Nav from './Nav';
-import styles from '../styles/Layout.module.scss';
 import { SocialContextProvider } from '../hooks/SocialProvider';
 import { ThemeContextProvider } from '../hooks/ThemeProvider';
+import MiniDrawer from './MiniDrawer';
 
 interface Props {
 	children: React.ReactNode;
@@ -21,8 +20,7 @@ const Layout = ({ children, session }: Props) => {
 						<meta name='description' content='Social Media Dashboard' />
 						<link rel='icon' href='/favicon.ico' />
 					</Head>
-					<Nav />
-					<main className={styles.main}>{children}</main>
+					<MiniDrawer>{children}</MiniDrawer>
 				</ThemeContextProvider>
 			</SocialContextProvider>
 		</SessionProvider>
