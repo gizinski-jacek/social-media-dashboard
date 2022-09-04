@@ -6,6 +6,7 @@ import { Strategy as InstagramStrategy } from 'passport-instagram-basic-api';
 import { Strategy as SnapchatStrategy } from 'passport-snapchat';
 import OAuth2Strategy from 'passport-oauth2';
 import passport from 'passport';
+import axios from 'axios';
 export { default as passport } from 'passport';
 
 passport.use(
@@ -18,15 +19,23 @@ passport.use(
 				process.env.MY_APP_URI + 'api/social-oauth/callback/facebook',
 			profileFields: ['id', 'displayName', 'posts', 'photos'],
 		},
-		(accessToken, refreshToken, profile, done) => {
-			const payload = {
-				provider: profile.provider,
-				id: profile.id,
-				username: profile.displayName,
-				picture: profile.photos[0].value,
-				access_token: accessToken,
-			};
-			return done(null, payload);
+		async (accessToken, refreshToken, profile, done) => {
+			try {
+				const longLivedToken = await axios.get(
+					`https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=${process.env.FACEBOOK_APP_ID}&client_secret=${process.env.FACEBOOK_APP_SECRET}&fb_exchange_token=${accessToken}`
+				);
+				const payload = {
+					provider: profile.provider,
+					id: profile.id,
+					username: profile.displayName,
+					picture: profile.photos[0].value,
+					access_token: longLivedToken.data.access_token,
+					expires_in: longLivedToken.data.expires_in,
+				};
+				return done(null, payload);
+			} catch (error) {
+				return done(error);
+			}
 		}
 	)
 );
@@ -88,14 +97,22 @@ passport.use(
 			callbackURL:
 				process.env.MY_APP_URI + 'api/social-oauth/callback/instagram',
 		},
-		(accessToken, refreshToken, profile, done) => {
-			const payload = {
-				provider: profile.provider,
-				id: profile.id,
-				username: profile.displayName,
-				access_token: accessToken,
-			};
-			return done(null, payload);
+		async (accessToken, refreshToken, profile, done) => {
+			try {
+				const longLivedToken = await axios.get(
+					`https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${process.env.INSTAGRAM_APP_SECRET}&access_token=${accessToken}`
+				);
+				console.log(longLivedToken.data.access_token);
+				const payload = {
+					provider: profile.provider,
+					id: profile.id,
+					username: profile.username,
+					access_token: longLivedToken.data.access_token,
+				};
+				return done(null, payload);
+			} catch (error) {
+				return done(error);
+			}
 		}
 	)
 );
