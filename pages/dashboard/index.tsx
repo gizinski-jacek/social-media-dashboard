@@ -48,7 +48,6 @@ const Dashboard = ({ data }: Props) => {
 			sx={{
 				flex: 1,
 				mt: '64px',
-				ml: '64px',
 				height: 'calc(100vh - 64px)',
 				maxHeight: 'calc(100vh - 64px)',
 				width: 'calc(100vw - 64px)',
@@ -64,9 +63,12 @@ const Dashboard = ({ data }: Props) => {
 							height: '100%',
 							overflow: 'auto',
 							display: 'flex',
+							flexDirection: 'column',
 						}}
 					>
-						<SocialComponent />
+						<Box sx={{ width: '100%', overflow: 'auto' }}>
+							<SocialComponent />
+						</Box>
 					</Box>
 				) : (
 					<Button
