@@ -25,9 +25,12 @@ import {
 	AccountBox,
 	DarkMode,
 	Dashboard,
+	Facebook,
+	Instagram,
 	LightMode,
 	Login,
 	Logout,
+	Twitter,
 } from '@mui/icons-material';
 import Footer from './Footer';
 
@@ -102,7 +105,13 @@ const Drawer = styled(MuiDrawer, {
 	}),
 }));
 
-const MiniDrawer = () => {
+const socialIcons = {
+	facebook: Facebook,
+	twitter: Twitter,
+	instagram: Instagram,
+};
+
+const MiniDrawer = ({ children }: React.ReactNode) => {
 	const { data: user } = useSession();
 	const { theme, toggleTheme } = useContext(ThemeContext);
 	const { social, updateSocial } = useContext(SocialContext);
@@ -137,7 +146,7 @@ const MiniDrawer = () => {
 	return (
 		<Box sx={{ display: 'flex' }}>
 			<CssBaseline />
-			<AppBar position='fixed' open={open}>
+			<AppBar open={open}>
 				<Toolbar>
 					<IconButton
 						color='inherit'
@@ -292,36 +301,40 @@ const MiniDrawer = () => {
 				</List>
 				<Divider />
 				<List>
-					{supportedSocialList.map((text) => (
-						<ListItem key={text} disablePadding sx={{ display: 'block' }}>
-							<ListItemButton
-								sx={{
-									backgroundColor: social == text ? 'lime' : 'white',
-									minHeight: 48,
-									justifyContent: open ? 'initial' : 'center',
-									px: 2.5,
-								}}
-								onClick={() => handleSocialChange(text)}
-							>
-								<ListItemIcon
+					{supportedSocialList.map((text) => {
+						const SocialIcon = text ? socialIcons[text] : null;
+						return (
+							<ListItem key={text} disablePadding sx={{ display: 'block' }}>
+								<ListItemButton
 									sx={{
-										minWidth: 0,
-										mr: open ? 3 : 'auto',
-										justifyContent: 'center',
+										backgroundColor: social == text ? 'lime' : 'white',
+										minHeight: 48,
+										justifyContent: open ? 'initial' : 'center',
+										px: 2.5,
 									}}
+									onClick={() => handleSocialChange(text)}
 								>
-									icon
-								</ListItemIcon>
-								<ListItemText
-									primary={text.charAt(0).toUpperCase() + text.slice(1)}
-									sx={{ opacity: open ? 1 : 0 }}
-								/>
-							</ListItemButton>
-						</ListItem>
-					))}
+									<ListItemIcon
+										sx={{
+											minWidth: 0,
+											mr: open ? 3 : 'auto',
+											justifyContent: 'center',
+										}}
+									>
+										<SocialIcon />
+									</ListItemIcon>
+									<ListItemText
+										primary={text.charAt(0).toUpperCase() + text.slice(1)}
+										sx={{ opacity: open ? 1 : 0 }}
+									/>
+								</ListItemButton>
+							</ListItem>
+						);
+					})}
 				</List>
 				<Footer />
 			</Drawer>
+			<main>{children}</main>
 		</Box>
 	);
 };
