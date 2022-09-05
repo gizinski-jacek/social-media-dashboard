@@ -126,18 +126,7 @@ const MiniDrawer = ({ children }: React.ReactNode) => {
 		setOpen(false);
 	};
 
-	const handleSocialChange = (value: string | null) => {
-		// console.log(1);
-		// console.log(value);
-		// console.log(1);
-		updateSocial(value);
-		// router.query.social = value;
-		// if (value) {
-		// 	router.push(`/dashboard?social=${social}`);
-		// } else {
-		// 	router.push('/dashboard');
-		// }
-	};
+	const handleSocialChange = (value: string) => {};
 
 	const handleThemeToggle = () => {
 		toggleTheme();
@@ -177,12 +166,13 @@ const MiniDrawer = ({ children }: React.ReactNode) => {
 					{user ? (
 						<ListItem disablePadding sx={{ display: 'block' }}>
 							<ListItemButton
+								component='a'
+								href='/account'
 								sx={{
 									minHeight: 48,
 									justifyContent: open ? 'initial' : 'center',
 									px: 2.5,
 								}}
-								onClick={() => handleSocialChange(null)}
 							>
 								<ListItemIcon
 									sx={{
@@ -334,7 +324,21 @@ const MiniDrawer = ({ children }: React.ReactNode) => {
 				</List>
 				<Footer />
 			</Drawer>
-			<main>{children}</main>
+			<main>
+				<Box
+					sx={{
+						mt: '64px',
+						flex: 1,
+						height: 'calc(100vh - 64px)',
+						maxHeight: 'calc(100vh - 64px)',
+						width: 'calc(100vw - 64px)',
+						maxWidth: 'calc(100vw - 64px)',
+						overflow: 'hidden',
+					}}
+				>
+					{children}
+				</Box>
+			</main>
 		</Box>
 	);
 };
