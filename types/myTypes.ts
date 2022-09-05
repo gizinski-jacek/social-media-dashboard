@@ -43,3 +43,58 @@ export interface SignUpData {
 	password: string;
 	confirm_password: string;
 }
+
+export interface FacebookPost {
+	id: string;
+	created_time: string;
+	object_id: string;
+	permalink_url: string;
+	message?: string;
+	comments?: {
+		data: {
+			id: string;
+			created_time: string;
+			message: string;
+			from: { id: string; name: string };
+		}[];
+		paging: { cursors: { before: string; after: string } };
+	};
+	attachments?: {
+		data: {
+			title: string;
+			description?: string;
+			type: string;
+			url: string;
+			media: {
+				image: { src: string; height: number; width: number };
+			};
+			subattachments?: {
+				data: {
+					type: string;
+					url: string;
+					media: {
+						image: { src: string; height: number; width: number };
+					};
+					target: {
+						id: string;
+						url: string;
+					};
+				}[];
+			};
+			target: {
+				id: string;
+				url: string;
+			};
+		}[];
+	};
+}
+
+export interface InstagramPost {
+	id: string;
+	username: string;
+	caption?: string;
+	timestamp: string;
+	media_type: string;
+	media_url: string;
+	permalink: string;
+}
