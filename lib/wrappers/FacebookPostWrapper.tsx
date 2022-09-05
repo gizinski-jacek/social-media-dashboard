@@ -37,11 +37,12 @@ const FacebookPostWrapper = ({ data }: Props) => {
 			</Typography>
 			{data.attachments?.data.map((d) => (
 				<Box key={d.target.id}>
-					<Box>
+					{/* {Removing images rendering until I find a way to accept images from dynamic FB domains} */}
+					{/* <Box>
 						{d.subattachments?.data.map((s, index) => (
 							<Image
 								key={s.target.id}
-								src={s.media.image.src}
+								src={d.media.image.src}
 								width={s.media.image.width}
 								height={s.media.image.height}
 								alt={`Attachment number ${index}`}
@@ -55,7 +56,7 @@ const FacebookPostWrapper = ({ data }: Props) => {
 								alt={d.title}
 							/>
 						)}
-					</Box>
+					</Box> */}
 					<Typography variant='h6'>{d.description}</Typography>
 				</Box>
 			))}
