@@ -1,5 +1,5 @@
 import { Card, Typography } from '@mui/material';
-import { InstagramPost } from '../../types/myTypes';
+import { InstagramPost } from '../../../types/myTypes';
 
 interface Props {
 	data: InstagramPost;

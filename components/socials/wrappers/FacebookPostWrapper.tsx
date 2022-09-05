@@ -1,7 +1,7 @@
 import { Card, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import Image from 'next/image';
-import { FacebookPost } from '../../types/myTypes';
+import { FacebookPost } from '../../../types/myTypes';
 
 interface Props {
 	data: FacebookPost;
