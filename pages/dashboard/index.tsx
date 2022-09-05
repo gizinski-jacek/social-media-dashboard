@@ -3,7 +3,7 @@ import Facebook from '../../components/socials/Facebook';
 import Twitter from '../../components/socials/Twitter';
 import Instagram from '../../components/socials/Instagram';
 import { SocialContext } from '../../hooks/SocialProvider';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Box, Button, Grid } from '@mui/material';
 import { supportedSocialList } from '../../lib/defaults';
 import { getSession } from 'next-auth/react';
@@ -35,26 +35,10 @@ const Dashboard = ({ data }: Props) => {
 		[updateSocial]
 	);
 
-	// useEffect(() => {
-	// 	const { social } = router.query as { social: string };
-	// 	console.log(social);
-	// 	if (social) {
-	// 		handleSocialChange(social);
-	// 	}
-	// }, [router.query, handleSocialChange]);
+	useEffect(() => {}, [router.query, updateSocial]);
 
 	return (
-		<Box
-			sx={{
-				flex: 1,
-				mt: '64px',
-				height: 'calc(100vh - 64px)',
-				maxHeight: 'calc(100vh - 64px)',
-				width: 'calc(100vw - 64px)',
-				maxWidth: 'calc(100vw - 64px)',
-				overflow: 'hidden',
-			}}
-		>
+		<Box>
 			{social ? (
 				socialsAccess.find((s) => s.provider === social) ? (
 					<Box
@@ -73,9 +57,9 @@ const Dashboard = ({ data }: Props) => {
 				) : (
 					<Button
 						component='a'
+						href={`/api/social-oauth/${social}`}
 						type='button'
 						variant='contained'
-						href={`/api/social-oauth/${social}`}
 					>
 						Sign in with {social}
 					</Button>
@@ -105,12 +89,22 @@ const Dashboard = ({ data }: Props) => {
 		</Box>
 	);
 };
+
 export const getServerSideProps = async (
 	context: GetServerSidePropsContext
 ) => {
 	let socialsAccessList: SocialHasAccess[] = [];
 	try {
 		const session = await getSession(context);
+		if (!session) {
+			return {
+				redirect: {
+					permanent: false,
+					destination: '/',
+				},
+				props: {},
+			};
+		}
 		if (session && session.user) {
 			await connectMongo();
 			const user: MongoUserModel = await User.findById(session.user._id)
@@ -150,7 +144,7 @@ export const getServerSideProps = async (
 	} catch (error) {
 		console.log(error);
 		return {
-			props: { data: socialsAccessList },
+			props: { data: [] },
 		};
 	}
 };
