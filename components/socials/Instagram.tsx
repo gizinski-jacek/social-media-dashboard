@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
-import InstagramPostWrapper from '../../lib/wrappers/InstagramPostWrapper';
+import InstagramPostWrapper from './wrappers/InstagramPostWrapper';
 import { InstagramPost } from '../../types/myTypes';
 
 const Instagram = () => {

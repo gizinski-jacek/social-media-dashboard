@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { FacebookPost } from '../../types/myTypes';
-import FacebookPostWrapper from '../../lib/wrappers/FacebookPostWrapper';
+import FacebookPostWrapper from './wrappers/FacebookPostWrapper';
 
 const Facebook = () => {
 	const [postsData, setPostsData] = useState<FacebookPost[]>([]);
