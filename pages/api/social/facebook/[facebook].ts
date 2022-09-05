@@ -23,26 +23,19 @@ const handler = nc<ExtendedNextApiRequest, NextApiResponse>({
 			try {
 				const userKey = await getUserKeyFromDB(req.user._id, 'facebook');
 				const response = await axios.get(
-					`https://graph.facebook.com/${userKey.id}/feed`,
-					{
-						params: {
-							access_token: userKey.access_token,
-						},
-					}
+					`https://graph.facebook.com/${userKey.id}/feed?access_token=${userKey.access_token}&fields=id,message,attachments,comments,created_time,description,name,object_id,parent_id,permalink_url,shares,timeline_visibility`
 				);
 				// response.data.paging contains paging links for posts, deconstruct them later
 				// to remove user's access token and return paging token and other parameters with
 				// posts data to render previous/next posts buttons on client
 				return res.status(200).json(response.data.data);
-			} catch (error: any) {
+			} catch (error) {
 				if (error instanceof AxiosError) {
 					return res
 						.status(error?.response?.status || 404)
 						.json(error?.response?.data || 'Unknown error');
 				} else {
-					return res
-						.status(error.code || 404)
-						.json(error.message || 'Unknown error');
+					return res.status(404).json('Unknown error');
 				}
 			}
 		}
