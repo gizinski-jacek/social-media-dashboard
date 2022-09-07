@@ -41,7 +41,7 @@ export interface SignUpData {
 	email: string;
 	username: string;
 	password: string;
-	confirm_password: string;
+	repeat_password: string;
 }
 
 export interface FacebookPost {
@@ -49,19 +49,13 @@ export interface FacebookPost {
 	created_time: string;
 	object_id: string;
 	permalink_url: string;
+	from: { id: string; name: string };
 	message?: string;
-	comments?: {
-		data: {
-			id: string;
-			created_time: string;
-			message: string;
-			from: { id: string; name: string };
-		}[];
-		paging: { cursors: { before: string; after: string } };
-	};
+	timeline_visibility?: string;
+	comments?: FacebookComment;
 	attachments?: {
 		data: {
-			title: string;
+			title?: string;
 			description?: string;
 			type: string;
 			url: string;
@@ -70,6 +64,7 @@ export interface FacebookPost {
 			};
 			subattachments?: {
 				data: {
+					description?: string;
 					type: string;
 					url: string;
 					media: {
@@ -87,6 +82,16 @@ export interface FacebookPost {
 			};
 		}[];
 	};
+}
+
+export interface FacebookComment {
+	data: {
+		id: string;
+		created_time: string;
+		message: string;
+		from: { id: string; name: string };
+	}[];
+	paging: { cursors: { before: string; after: string } };
 }
 
 export interface InstagramPost {
