@@ -28,12 +28,9 @@ const Dashboard = ({ data }: Props) => {
 	const router = useRouter();
 	const SocialComponent = social ? socialComponents[social] : null;
 
-	const handleSocialChange = useCallback(
-		(value: string | null) => {
-			updateSocial(value);
-		},
-		[updateSocial]
-	);
+	const handleSocialChange = (value: string | null) => {
+		updateSocial(value);
+	};
 
 	useEffect(() => {}, [router.query, updateSocial]);
 
@@ -45,14 +42,13 @@ const Dashboard = ({ data }: Props) => {
 						sx={{
 							width: '100%',
 							height: '100%',
-							overflow: 'auto',
 							display: 'flex',
-							flexDirection: 'column',
+							flexDirection: 'row',
+							overflow: 'auto',
+							flexWrap: 'wrap',
 						}}
 					>
-						<Box sx={{ width: '100%', overflow: 'auto' }}>
-							<SocialComponent />
-						</Box>
+						<SocialComponent />
 					</Box>
 				) : (
 					<Button
