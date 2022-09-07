@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { signIn } from 'next-auth/react';
 import axios from 'axios';
 import {
+	Box,
 	Button,
 	FormControl,
 	FormHelperText,
@@ -84,7 +85,7 @@ const Home: NextPage = () => {
 
 	const handleSignUpSubmit = async () => {
 		try {
-			await axios.post('/api/user/signup', signUpData);
+			await axios.post('/api/account/signup', signUpData);
 			handleResetFormsAndErrors();
 			setShowForm('signIn');
 		} catch (error: any) {
@@ -94,7 +95,7 @@ const Home: NextPage = () => {
 
 	const handleRecoverAccountSubmit = async () => {
 		try {
-			await axios.post('/api/user/recover-account', {
+			await axios.post('/api/account/recover-account', {
 				username_or_email: recoverAccountData,
 			});
 			handleResetFormsAndErrors();
@@ -145,11 +146,15 @@ const Home: NextPage = () => {
 									required
 								/>
 							</FormControl>
-							{signInFormError.map((message, index) => (
-								<FormHelperText sx={{ mx: 1, color: 'red' }} key={index}>
-									{message}
-								</FormHelperText>
-							))}
+							{signInFormError.length !== 0 ? (
+								<Box>
+									{signInFormError.map((message, index) => (
+										<FormHelperText sx={{ mx: 1, color: 'red' }} key={index}>
+											{message}
+										</FormHelperText>
+									))}
+								</Box>
+							) : null}
 							{signInFormError.length > 0 ? (
 								<FormHelperText
 									sx={{ m: 1, cursor: 'pointer', color: 'orange' }}
@@ -205,7 +210,7 @@ const Home: NextPage = () => {
 									type='password'
 									inputProps={{ minLength: 4, maxLength: 32 }}
 									error={
-										signUpData.password === signUpData.confirm_password
+										signUpData.password === signUpData.repeat_password
 											? false
 											: true
 									}
@@ -216,30 +221,34 @@ const Home: NextPage = () => {
 								/>
 							</FormControl>
 							<FormControl sx={{ m: 1 }}>
-								<InputLabel htmlFor='confirm_password'>
-									Confirm Password
+								<InputLabel htmlFor='repeat_password'>
+									Repeat Password
 								</InputLabel>
 								<Input
-									id='confirm_password'
-									name='confirm_password'
+									id='repeat_password'
+									name='repeat_password'
 									type='password'
 									inputProps={{ minLength: 4, maxLength: 32 }}
 									error={
-										signUpData.password === signUpData.confirm_password
+										signUpData.password === signUpData.repeat_password
 											? false
 											: true
 									}
-									value={signUpData?.confirm_password}
+									value={signUpData?.repeat_password}
 									onChange={handleSignUpChange}
-									placeholder='Confirm Password'
+									placeholder='Repeat Password'
 									required
 								/>
 							</FormControl>
-							{signUpFormError.map((message, index) => (
-								<FormHelperText sx={{ mx: 1, color: 'red' }} key={index}>
-									{message}
-								</FormHelperText>
-							))}
+							{signUpFormError.length !== 0 ? (
+								<Box>
+									{signUpFormError.map((message, index) => (
+										<FormHelperText sx={{ mx: 1, color: 'red' }} key={index}>
+											{message}
+										</FormHelperText>
+									))}
+								</Box>
+							) : null}
 							<Button type='button' onClick={handleSignUpSubmit}>
 								Register
 							</Button>
@@ -282,11 +291,15 @@ const Home: NextPage = () => {
 									required
 								/>
 							</FormControl>
-							{recoverAccountError.map((message, index) => (
-								<FormHelperText sx={{ mx: 1, color: 'red' }} key={index}>
-									{message}
-								</FormHelperText>
-							))}
+							{recoverAccountError.length !== 0 ? (
+								<Box>
+									{recoverAccountError.map((message, index) => (
+										<FormHelperText sx={{ mx: 1, color: 'red' }} key={index}>
+											{message}
+										</FormHelperText>
+									))}
+								</Box>
+							) : null}
 							<Button type='button' onClick={handleRecoverAccountSubmit}>
 								Recover
 							</Button>
