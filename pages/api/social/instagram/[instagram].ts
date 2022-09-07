@@ -23,7 +23,7 @@ const handler = nc<ExtendedNextApiRequest, NextApiResponse>({
 			try {
 				const userKey = await getUserKeyFromDB(req.user._id, 'instagram');
 				const response = await axios.get(
-					`https://graph.instagram.com/${userKey.id}/media?fields=id,username,caption,timestamp,media_type,media_url,thumbnail_url,permalink&access_token=${userKey.access_token}`
+					`https://graph.instagram.com/${userKey.id}/media?fields=id,username,media,caption,timestamp,media_type,media_url,thumbnail_url,permalink&access_token=${userKey.access_token}`
 				);
 				// response.data.paging contains paging links for posts, deconstruct them later
 				// to remove user's access token and return paging token and other parameters with

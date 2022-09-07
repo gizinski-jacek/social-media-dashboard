@@ -23,7 +23,7 @@ const handler = nc<ExtendedNextApiRequest, NextApiResponse>({
 			try {
 				const userKey = await getUserKeyFromDB(req.user._id, 'facebook');
 				const response = await axios.get(
-					`https://graph.facebook.com/${userKey.id}/feed?access_token=${userKey.access_token}&fields=id,message,attachments,comments,created_time,description,name,object_id,parent_id,permalink_url,shares,timeline_visibility`
+					`https://graph.facebook.com/${userKey.id}/feed?access_token=${userKey.access_token}&fields=id,message,attachments,comments,created_time,target,from,description,name,object_id,parent_id,permalink_url,shares,timeline_visibility`
 				);
 				// response.data.paging contains paging links for posts, deconstruct them later
 				// to remove user's access token and return paging token and other parameters with
