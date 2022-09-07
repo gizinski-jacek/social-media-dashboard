@@ -9,5 +9,5 @@ export const defaultSignUpValues = {
 	email: '',
 	username: '',
 	password: '',
-	confirm_password: '',
+	repeat_password: '',
 };
